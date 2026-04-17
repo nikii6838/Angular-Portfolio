@@ -60,7 +60,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   readonly otherDetails = OTHER_DETAILS;
   readonly declaration = DECLARATION;
 
-  readonly profilePhotoUrl = '/images/Nikita.png';
+  readonly profilePhotoUrl = '/assets/images/nikiiii.jpg';
 
   activeSection: SectionId = 'home';
 

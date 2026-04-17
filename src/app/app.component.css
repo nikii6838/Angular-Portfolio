@@ -322,15 +322,19 @@ main {
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
-  /* Nikita.png hero art (dark left, portrait right) + light overlay for nav/text contrast */
-  background:
-    linear-gradient(
-      120deg,
-      rgba(5, 13, 24, 0.72) 0%,
-      rgba(5, 13, 24, 0.35) 42%,
-      rgba(5, 13, 24, 0.55) 100%
+  background-color: #0a0e14;
+  background-image:
+    radial-gradient(
+      ellipse 70% 55% at 88% 42%,
+      rgba(34, 211, 238, 0.07) 0%,
+      transparent 55%
     ),
-    url('/images/Nikita.png') right center / cover no-repeat #121b24;
+    radial-gradient(
+      ellipse 50% 40% at 12% 78%,
+      rgba(168, 85, 247, 0.05) 0%,
+      transparent 50%
+    ),
+    linear-gradient(165deg, #0b1018 0%, #070a10 55%, #0a0e14 100%);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -342,6 +346,18 @@ main {
   inset: 0;
   pointer-events: none;
   z-index: 0;
+}
+
+.home-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
 }
 
 .orb {
@@ -402,17 +418,21 @@ main {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-inline-end: clamp(0rem, 2vw, 1.5rem);
   animation: profileFloat 5.5s ease-in-out infinite;
 }
 
 .profile-ring {
   position: relative;
-  width: min(42vw, 340px);
+  width: min(44vw, 360px);
   aspect-ratio: 1;
   border-radius: 50%;
   box-sizing: border-box;
   isolation: isolate;
+  filter: drop-shadow(0 0 28px rgba(34, 211, 238, 0.45))
+    drop-shadow(0 0 56px rgba(34, 211, 238, 0.2))
+    drop-shadow(0 0 40px rgba(168, 85, 247, 0.25));
 }
 
 .profile-ring::before {
@@ -421,13 +441,26 @@ main {
   inset: 0;
   z-index: 0;
   border-radius: 50%;
-  background: linear-gradient(145deg, #22d3ee 0%, #c026d3 45%, #22d3ee 100%);
-  animation: spinGlow 10s linear infinite;
+  transform-origin: center;
+  background: conic-gradient(
+    from 0deg,
+    #22d3ee,
+    #a5f3fc,
+    #c084fc,
+    #a855f7,
+    #22d3ee,
+    #e0f2fe,
+    #67e8f9,
+    #22d3ee
+  );
+  animation:
+    spinGlow 12s linear infinite,
+    ringGlowPulse 4.5s ease-in-out infinite;
   pointer-events: none;
   box-shadow:
-    0 0 32px rgba(34, 211, 238, 0.55),
-    0 0 64px rgba(192, 38, 211, 0.3),
-    0 0 96px rgba(34, 211, 238, 0.2);
+    0 0 24px rgba(34, 211, 238, 0.65),
+    0 0 48px rgba(168, 85, 247, 0.35),
+    0 0 80px rgba(34, 211, 238, 0.25);
 }
 
 .profile-inner {
@@ -435,15 +468,16 @@ main {
   display: block !important;
   visibility: visible !important;
   z-index: 1;
-  inset: 6px;
+  inset: 8px;
   border-radius: 50%;
   overflow: hidden;
-  background: transparent;
+  background: #0a0e14;
   border: none;
   box-sizing: border-box;
   box-shadow:
-    0 0 0 2px #d946ef,
-    0 0 0 4px #22d3ee;
+    inset 0 0 0 2px rgba(255, 255, 255, 0.95),
+    inset 0 0 0 3px rgba(34, 211, 238, 0.25),
+    inset 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 
 .profile-inner img {
@@ -451,8 +485,7 @@ main {
   height: 100%;
   display: block;
   object-fit: cover;
-  /* Wide mockup art has the portrait on the right; use center for square photos like nikiiii.jpg */
-  object-position: 82% center;
+  object-position: center 22%;
   transform-origin: center;
   position: relative;
   z-index: 1;
@@ -637,6 +670,23 @@ main {
   }
 }
 
+@keyframes ringGlowPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 18px rgba(34, 211, 238, 0.45),
+      0 0 36px rgba(168, 85, 247, 0.22),
+      0 0 64px rgba(34, 211, 238, 0.15);
+  }
+
+  50% {
+    box-shadow:
+      0 0 32px rgba(34, 211, 238, 0.85),
+      0 0 58px rgba(168, 85, 247, 0.45),
+      0 0 96px rgba(34, 211, 238, 0.35);
+  }
+}
+
 @keyframes profileFloat {
   0%,
   100% {
@@ -724,6 +774,11 @@ main {
     flex-direction: column-reverse;
     text-align: center;
     padding-top: 1rem;
+  }
+
+  .home-visual {
+    justify-content: center;
+    padding-inline-end: 0;
   }
 
   .home-content {
